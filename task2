@@ -1,0 +1,232 @@
+import java.util.*;
+
+// Main class to manage the hospital system
+class hospitalmng {
+
+    public static void main(String[] args) {
+        Hospital hospital = new Hospital();
+        hospital.start();
+    }
+}
+
+// Core hospital class
+class Hospital {
+    private final PatientRegistry patientRegistry = new PatientRegistry();
+    private final AppointmentScheduler appointmentScheduler = new AppointmentScheduler();
+    private final EHRSystem ehrSystem = new EHRSystem();
+    private final BillingSystem billingSystem = new BillingSystem();
+    private final InventoryManagement inventoryManagement = new InventoryManagement();
+    private final StaffManagement staffManagement = new StaffManagement();
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nWelcome to the Hospital Management System");
+            System.out.println("1. Patient Registration");
+            System.out.println("2. Appointment Scheduling");
+            System.out.println("3. Electronic Health Records");
+            System.out.println("4. Billing and Invoicing");
+            System.out.println("5. Inventory Management");
+            System.out.println("6. Staff Management");
+            System.out.println("7. Exit");
+
+            System.out.print("Select an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    patientRegistry.managePatients(scanner);
+                    break;
+                case 2:
+                    appointmentScheduler.manageAppointments(scanner);
+                    break;
+                case 3:
+                    ehrSystem.manageRecords(scanner);
+                    break;
+                case 4:
+                    billingSystem.manageBilling(scanner);
+                    break;
+                case 5:
+                    inventoryManagement.manageInventory(scanner);
+                    break;
+                case 6:
+                    staffManagement.manageStaff(scanner);
+                    break;
+                case 7:
+                    System.out.println("Exiting the system. Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
+
+// Patient registration module
+class PatientRegistry {
+    private final List<Patient> patients = new ArrayList<>();
+
+    public void managePatients(Scanner scanner) {
+        System.out.println("\nPatient Registration:");
+        System.out.print("Enter patient name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter patient age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+        System.out.print("Enter patient contact: ");
+        String contact = scanner.nextLine();
+
+        patients.add(new Patient(name, age, contact));
+        System.out.println("Patient registered successfully.");
+    }
+}
+
+class Patient {
+    private final String name;
+    private final int age;
+    private final String contact;
+
+    public Patient(String name, int age, String contact) {
+        this.name = name;
+        this.age = age;
+        this.contact = contact;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{name='" + name + "', age=" + age + ", contact='" + contact + "'}";
+    }
+}
+
+// Appointment scheduling module
+class AppointmentScheduler {
+    private final List<Appointment> appointments = new ArrayList<>();
+
+    public void manageAppointments(Scanner scanner) {
+        System.out.println("\nAppointment Scheduling:");
+        System.out.print("Enter patient name: ");
+        String patientName = scanner.nextLine();
+        System.out.print("Enter doctor name: ");
+        String doctorName = scanner.nextLine();
+        System.out.print("Enter appointment date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+
+        appointments.add(new Appointment(patientName, doctorName, date));
+        System.out.println("Appointment scheduled successfully.");
+    }
+}
+
+class Appointment {
+    private final String patientName;
+    private final String doctorName;
+    private final String date;
+
+    public Appointment(String patientName, String doctorName, String date) {
+        this.patientName = patientName;
+        this.doctorName = doctorName;
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{patientName='" + patientName + "', doctorName='" + doctorName + "', date='" + date + "'}";
+    }
+}
+
+// Electronic health records module
+class EHRSystem {
+    private final Map<String, String> healthRecords = new HashMap<>();
+
+    public void manageRecords(Scanner scanner) {
+        System.out.println("\nElectronic Health Records:");
+        System.out.print("Enter patient name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter health record details: ");
+        String record = scanner.nextLine();
+
+        healthRecords.put(name, record);
+        System.out.println("Record updated successfully.");
+    }
+}
+
+// Billing system module
+class BillingSystem {
+    private final List<Invoice> invoices = new ArrayList<>();
+
+    public void manageBilling(Scanner scanner) {
+        System.out.println("\nBilling and Invoicing:");
+        System.out.print("Enter patient name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter amount: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // consume newline
+
+        invoices.add(new Invoice(name, amount));
+        System.out.println("Invoice generated successfully.");
+    }
+}
+
+class Invoice {
+    private final String patientName;
+    private final double amount;
+
+    public Invoice(String patientName, double amount) {
+        this.patientName = patientName;
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{patientName='" + patientName + "', amount=" + amount + "}";
+    }
+}
+
+// Inventory management module
+class InventoryManagement {
+    private final Map<String, Integer> inventory = new HashMap<>();
+
+    public void manageInventory(Scanner scanner) {
+        System.out.println("\nInventory Management:");
+        System.out.print("Enter item name: ");
+        String item = scanner.nextLine();
+        System.out.print("Enter quantity: ");
+        int quantity = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        inventory.put(item, inventory.getOrDefault(item, 0) + quantity);
+        System.out.println("Inventory updated successfully.");
+    }
+}
+
+// Staff management module
+class StaffManagement {
+    private final List<Staff> staffMembers = new ArrayList<>();
+
+    public void manageStaff(Scanner scanner) {
+        System.out.println("\nStaff Management:");
+        System.out.print("Enter staff name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter role: ");
+        String role = scanner.nextLine();
+
+        staffMembers.add(new Staff(name, role));
+        System.out.println("Staff member added successfully.");
+    }
+}
+
+class Staff {
+    private final String name;
+    private final String role;
+
+    public Staff(String name, String role) {
+        this.name = name;
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Staff{name='" + name + "', role='" + role + "'}";
+    }
+}
